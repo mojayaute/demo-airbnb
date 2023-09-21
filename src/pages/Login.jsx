@@ -22,6 +22,9 @@ function Login() {
             const res = await AuthService.login(credentials);
             let data = res.data;
             if (data.status) {
+                console.log(data);
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.data));
                 navigate("/profile");
             } else {
                 setIsError(true);
@@ -47,7 +50,7 @@ function Login() {
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-3">
                                     <label className="form-label">Email address</label>
-                                    <input type="email" name="email" value={credentials.emailal} onChange={handleChange} className="form-control" required />
+                                    <input type="email" name="email" value={credentials.email} onChange={handleChange} className="form-control" required />
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label">Password</label>

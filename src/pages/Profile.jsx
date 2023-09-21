@@ -1,6 +1,9 @@
-import Header from "../components/Header"
+import Header from "../components/Header";
+import { useState } from 'react';
+
 
 function Profile() {
+    const user = JSON.parse(localStorage.getItem('user'));
     return (
         <>
             <Header />
@@ -8,7 +11,7 @@ function Profile() {
                 <div className="row justify-content-center">
                     <div className="col-md-12">
                         <div className="card p-4">
-                            <h3>Profile view</h3>
+                            <h3>Welcome {user ? user.full_name : ('?')}</h3>
                         </div>
                     </div>
                 </div>

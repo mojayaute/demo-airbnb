@@ -5,6 +5,7 @@ import Address from './pages/Address';
 import ForgotPassword from './pages/ForgotPassword';
 import Places from './pages/Places';
 import Profile from './pages/Profile';
+import FormAddress from './pages/FormAddress';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route exact path="/forgot-password" element={<ForgotPassword />} />
         <Route exact path="/places" element={<Places />} />
         <Route exact path="/profile" element={<Profile />} />
+        <Route exact path="/address/add" element={<FormAddress />} />
       </Routes>
     </>
   )

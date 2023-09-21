@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import defaultProfilePic from "../assets/img/default-profile-pic.webp";
+import useSession from '../useSession';
+
 
 function Header() {
+    const { user, setUser } = useSession();
+
     return (
         <>
             <header>
@@ -32,7 +36,7 @@ function Header() {
                         <img src={defaultProfilePic} width={25} className="rounded-circle me-2" alt="" />
                         <div className="dropdown">
                             <a className="text-decoration-none text-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                John Doe
+                                {user.full_name}
                             </a>
                             <ul className="dropdown-menu">
                                 <li><Link to={"/profile"} className="dropdown-item">Profile</Link></li>
