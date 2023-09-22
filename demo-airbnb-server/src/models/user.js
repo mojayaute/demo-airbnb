@@ -3,7 +3,9 @@
 const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
-
+/**
+ * Address Schema
+ */
 let AddressSchema = new Schema({
     country: {
         type: String,
@@ -12,7 +14,6 @@ let AddressSchema = new Schema({
     },
     state: {
         type: String,
-        unique: true,
         required: true
     },
     city: {
@@ -27,7 +28,13 @@ let AddressSchema = new Schema({
         type: String,
         required: true,
     },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
+
+const Address = mongoose.model('Address', AddressSchema);
 
 /**
  * User Schema
@@ -51,11 +58,14 @@ let UserSchema = new Schema({
         type: String,
         required: true,
     },
-    addresses: [AddressSchema],
+    addresses: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Address'
+    }],
     created_at: {
         type: Date,
         default: Date.now
     }
 });
 
-mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);

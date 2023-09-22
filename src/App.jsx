@@ -6,6 +6,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import Places from './pages/Places';
 import Profile from './pages/Profile';
 import FormAddress from './pages/FormAddress';
+import Addresses from './pages/Addresses';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route exact path="/places" element={<Places />} />
         <Route exact path="/profile" element={<Profile />} />
         <Route exact path="/address/add" element={<FormAddress />} />
+        <Route exact path="/address/all" element={<Addresses />} />
       </Routes>
     </>
   )

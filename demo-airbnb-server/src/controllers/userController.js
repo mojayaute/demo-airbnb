@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 let User = mongoose.model('User');
+let Address = mongoose.model('Address');
+
 
 exports.register = async function (req, res) {
     try {
@@ -38,10 +40,22 @@ exports.signIn = async function (req, res) {
     }
 };
 
-
 exports.updateUser = async function (req, res) {
     try {
         let resUser = await User.updateOne({email: req.body.email}, req.body);
+        console.log(resUser);
+        res.json({ status: true, data: resUser });
+    } catch (error) {
+        console.error("An error ocurred -s> ", error);
+        res.json({ status: false, data: error });
+    }
+};
+
+exports.getUser = async function (req, res) {
+    try {
+        let resUser = await User.findById(req.params.id).populate({
+            path: "addresses"
+        });
         console.log(resUser);
         res.json({ status: true, data: resUser });
     } catch (error) {
@@ -50,11 +64,11 @@ exports.updateUser = async function (req, res) {
     }
 };
 
-exports.getUser = async function (req, res) {
+exports.getAllUsers = async function (req, res) {
     try {
-        let resUser = await User.find({email: req.email});
-        console.log(resUser);
-        res.json({ status: true, data: resUser });
+        let resUsers = await User.find();
+        console.log(resUsers);
+        res.json({ status: true, data: resUsers });
     } catch (error) {
         console.error("An error ocurred -> ", error);
         res.json({ status: false, data: error });
@@ -64,10 +78,28 @@ exports.getUser = async function (req, res) {
 
 exports.getAllAddresses = async function (req, res) {
     try {
-        let resUsers = await User.find();
-        //filter by addresses...
-        console.log(resUsers);
-        res.json({ status: true, data: resUser });
+         
+        let addresses = await Address.find();
+        console.log(addresses);
+        res.json({ status: true, data: addresses });
+    } catch (error) {
+        console.error("An error ocurred -> ", error);
+        res.json({ status: false, data: error });
+    }
+};
+
+exports.saveAddress = async function (req, res) {
+    try {
+        let id = req.params.id;
+        req.body.user = id;
+        let user = await User.findById(id);
+        let newAddress = new Address(req.body);
+        let address = await newAddress.save();
+        user.addresses.push(address._id);
+        await user.save();
+
+
+        res.json({ status: true, message: 'Address saved', data: address });
     } catch (error) {
         console.error("An error ocurred -> ", error);
         res.json({ status: false, data: error });

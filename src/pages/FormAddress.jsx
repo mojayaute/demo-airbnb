@@ -1,7 +1,7 @@
 import Header from "../components/Header"
 import useSession from '../useSession';
 import React, { useState, useEffect } from "react";
-import AuthService from "../services/AuthService";
+import AddressService from "../services/AddressService";
 import Swal from 'sweetalert2';
 import { useNavigate } from "react-router-dom";
 
@@ -16,13 +16,11 @@ function Address() {
         zip: "",
     }
 
-    const { token, setToken } = useSession();
     const { user, setUser } = useSession();
     const [address, setAddress] = useState(initAddress);
     const [isError, setIsError] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const navigate = useNavigate();
-
 
     const handleInputChange = event => {
         const { name, value } = event.target;
@@ -32,18 +30,14 @@ function Address() {
     const saveAddress = async (e) => {
         e.preventDefault();
         try {
-            let toAdd = {
+            let newAddress = {
                 country: address.country,
                 state: address.state,
                 city: address.city,
                 street: address.street,
-                zip: address.zip,
+                zip: address.zip
             }
-            let addresses = user.addresses;
-            addresses.push(toAdd);
-
-            let data = { email: user.email, addresses }
-            let res = await AuthService.updateUser(data);
+            let res = await AddressService.saveAddress(newAddress, user._id);
             let resData = res.data;
             if (resData.status) {
                 Swal.fire({
@@ -51,10 +45,8 @@ function Address() {
                     text: 'Address added succesfully.',
                     icon: 'success',
                 }).then((result) => {
-                    //user.addresses = addresses;
                     navigate('/address');
                 });
-
             } else {
                 console.log("Error -> ",resData);
                 setIsError(true);

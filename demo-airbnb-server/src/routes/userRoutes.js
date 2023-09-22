@@ -11,7 +11,12 @@ module.exports = function (app) {
 
     app.route('/user/update').post(userHandlers.updateUser);
 
-    app.route('/user/:email').get(userHandlers.getUser);
+    app.route('/user/one/:id').get(userHandlers.getUser);
 
+    app.route('/users/all').get(userHandlers.getAllUsers);
+
+    app.route('/user/:id/address/save').post(userHandlers.saveAddress);
+
+    app.route('/addresses/all').get(userHandlers.getAllAddresses);
 
 };

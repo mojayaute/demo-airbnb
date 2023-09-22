@@ -1,14 +1,11 @@
 import Header from "../components/Header";
 import DataTable from 'react-data-table-component';
-import { Link } from "react-router-dom";
-import useSession from '../useSession';
 import React, { useState, useEffect } from "react";
-import AuthService from "../services/AuthService";
+import AddressService from "../services/AddressService";
 
 
 
 function Address() {
-    const { user, setUser } = useSession();
     const [addresses, setAddresses] = useState([]);
 
     useEffect(() => {
@@ -16,9 +13,9 @@ function Address() {
     }, []);
 
     const getAddresses = () => {
-        AuthService.getUser(user._id).then(response => {
+        AddressService.getAll().then(response => {
             console.log(response);
-            setAddresses(response.data.data.addresses);
+            setAddresses(response.data.data);
         }).catch(e => {
             console.error(e);
         });
@@ -59,10 +56,7 @@ function Address() {
             <div className='container pt-5'>
                 <div className="row mb-3">
                     <div className="col-md-6">
-                        <h3>Addresses</h3>
-                    </div>
-                    <div className="col-md-6 text-end">
-                        <Link to={"/address/add"} className="btn btn-success">Add new</Link>
+                        <h3>All Addresses</h3>
                     </div>
                 </div>
                 <div className="row justify-content-center">

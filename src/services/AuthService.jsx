@@ -12,8 +12,13 @@ const updateUser = data => {
     return http.post("/user/update", data);
 };
 
+const getUser = (id) => {
+    return http.get(`/user/one/${id}`);
+}
+
 export default {
     register,
     login,
-    updateUser
+    updateUser,
+    getUser
 };

@@ -21,8 +21,10 @@ function Header() {
                                     <Link to={"/"} className="nav-link">Home</Link>
                                 </li>
                                 <li className="nav-item">
-
-                                    <Link to={"/address"} className="nav-link">Address</Link>
+                                    <Link to={"/address"} className="nav-link">My addresses</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link to={"/address/all"} className="nav-link">All addresses</Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link to={"/places"} className="nav-link">Places</Link>
