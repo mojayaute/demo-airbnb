@@ -1,21 +1,21 @@
 import Header from "../components/Header";
 import DataTable from 'react-data-table-component';
 import React, { useState, useEffect } from "react";
-import AddressService from "../services/AddressService";
+import AuthService from "../services/AuthService";
+import moment from 'moment';
 
 
 
-function Address() {
-    const [addresses, setAddresses] = useState([]);
-    const [search, setSearch] = useState("");
+function Users() {
+    const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        getAddresses();
+        getUsers();
     }, []);
 
-    const getAddresses = () => {
-        AddressService.getAll().then(response => {
-            setAddresses(response.data.data);
+    const getUsers = () => {
+        AuthService.getAll().then(response => {
+            setUsers(response.data.data);
         }).catch(e => {
             console.error(e);
         });
@@ -23,45 +23,35 @@ function Address() {
 
     const columns = [
         {
-            name: 'Country',
-            selector: row => row.country,
+            name: 'Name',
+            selector: row => row.full_name,
             sortable: true,
         },
         {
-            name: 'State',
-            selector: row => row.state,
+            name: 'Birthday',
+            selector: row => moment(row.birthday).format('DD-MM-YYYY'),
             sortable: true,
         },
         {
-            name: 'City',
-            selector: row => row.city,
-            sortable: true,
+            name: 'Email',
+            selector: row => row.email,
+            sortable: true
         },
         {
-            name: 'Street',
-            selector: row => row.street,
-            sortable: true,
-        },
-        {
-            name: 'Zip',
-            selector: row => row.zip,
-            sortable: true,
-        },
-        {
-            name: 'User',
-            selector: row => row.user.full_name,
-            sortable: true,
+            name: 'Age',
+            selector: row => moment().diff(row.birthday, 'years'),
+            sortable: true
         }
     ];
 
     const handleFilter = event => {
         if (event.target.value) {
-            const filtered = addresses.filter( row => {
-                 return row.city.toLowerCase().includes(event.target.value.toLowerCase())
+            const filtered = users.filter( row => {
+                return row.full_name.toLowerCase().includes(event.target.value.toLowerCase());
             })
-            setAddresses(filtered)
+            setUsers(filtered)
         } else {
-            getAddresses();
+            getUsers();
         }
     };
 
@@ -71,7 +61,7 @@ function Address() {
             <div className='container pt-5'>
                 <div className="row mb-3">
                     <div className="col-md-6">
-                        <h3>All Addresses</h3>
+                        <h3>All users</h3>
                     </div>
                 </div>
                 <div className="row justify-content-center">
@@ -82,7 +72,7 @@ function Address() {
                                     <input type="text" onChange={handleFilter} name="search" placeholder="Search" className="form-control" />
                                 </div>
                             </div>
-                            <DataTable columns={columns} data={addresses} pagination />
+                            <DataTable columns={columns} data={users} pagination />
                         </div>
                     </div>
                 </div>
@@ -91,4 +81,4 @@ function Address() {
     )
 }
 
-export default Address
+export default Users

@@ -16,9 +16,14 @@ const getUser = (id) => {
     return http.get(`/user/one/${id}`);
 }
 
+const getAll = () => {
+    return http.get(`/users/all`);
+}
+
 export default {
     register,
     login,
     updateUser,
-    getUser
+    getUser,
+    getAll
 };

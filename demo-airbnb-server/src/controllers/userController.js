@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 let User = mongoose.model('User');
 let Address = mongoose.model('Address');
+let Place = mongoose.model('Place');
+
 
 
 exports.register = async function (req, res) {
@@ -26,7 +28,7 @@ exports.signIn = async function (req, res) {
             email: req.body.email
         });
         if (!user || !bcrypt.compareSync(req.body.password, user.password)) {
-            return res.json({ status:false, message: 'Authentication failed. Invalid user or password.' });
+            return res.json({ status: false, message: 'Authentication failed. Invalid user or password.' });
         }
         return res.json({
             status: true,
@@ -42,7 +44,7 @@ exports.signIn = async function (req, res) {
 
 exports.updateUser = async function (req, res) {
     try {
-        let resUser = await User.updateOne({email: req.body.email}, req.body);
+        let resUser = await User.updateOne({ email: req.body.email }, req.body);
         console.log(resUser);
         res.json({ status: true, data: resUser });
     } catch (error) {
@@ -78,8 +80,8 @@ exports.getAllUsers = async function (req, res) {
 
 exports.getAllAddresses = async function (req, res) {
     try {
-         
-        let addresses = await Address.find();
+
+        let addresses = await Address.find().populate('user');
         console.log(addresses);
         res.json({ status: true, data: addresses });
     } catch (error) {
@@ -106,6 +108,25 @@ exports.saveAddress = async function (req, res) {
     }
 };
 
+exports.getAllPlaces = async function (req, res) {
+    try {
+        // Pagination options
+        const page = 1;        // Page number
+        const perPage = 10;    // Number of documents per page
+
+        // Calculate the number of documents to skip
+        const skipDocuments = (page - 1) * perPage;
+        let listings = await Place.find({})
+            .skip(skipDocuments)
+            .limit(perPage)
+            .toArray();
+        console.log(listings);
+        res.json({ status: true, data: listings });
+    } catch (error) {
+        console.error("An error ocurred -> ", error);
+        res.json({ status: false, data: error });
+    }
+};
 
 exports.loginRequired = function (req, res, next) {
     if (req.user) {

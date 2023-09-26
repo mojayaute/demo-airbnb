@@ -69,3 +69,41 @@ let UserSchema = new Schema({
 });
 
 const User = mongoose.model('User', UserSchema);
+
+let placeSchema = new Schema({
+    listing_url: {
+        type: String
+    },
+    name: {
+        type: String
+    },
+    summary: {
+        type: String
+    },
+    space: {
+        type: String
+    },
+    description: {
+        type: String
+    },
+    neighborhood_overview: {
+        type: String
+    },
+    notes: {
+        type: String
+    },
+    transit: {
+        type: String
+    },
+    access: {
+        type: String
+    },
+    interaction: {
+        type: String
+    },
+    interaction: {
+        type: String
+    }
+});
+
+const Place = mongoose.model('Place', placeSchema);

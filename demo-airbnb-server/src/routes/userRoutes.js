@@ -19,4 +19,5 @@ module.exports = function (app) {
 
     app.route('/addresses/all').get(userHandlers.getAllAddresses);
 
+    app.route('/places/all').get(userHandlers.getAllPlaces);
 };

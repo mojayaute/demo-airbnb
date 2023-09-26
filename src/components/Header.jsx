@@ -1,10 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import defaultProfilePic from "../assets/img/default-profile-pic.webp";
 import useSession from '../useSession';
 
 
 function Header() {
     const { user, setUser } = useSession();
+    const navigate = useNavigate();
+
+
+    const handleLogout = () => {
+        localStorage.clear();
+        navigate('/');
+    }
 
     return (
         <>
@@ -18,20 +25,18 @@ function Header() {
                         <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
                             <ul className="navbar-nav me-3">
                                 <li className="nav-item">
-                                    <Link to={"/"} className="nav-link">Home</Link>
-                                </li>
-                                <li className="nav-item">
                                     <Link to={"/address"} className="nav-link">My addresses</Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link to={"/address/all"} className="nav-link">All addresses</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to={"/places"} className="nav-link">Places</Link>
+                                    <Link to={"/users"} className="nav-link">Users</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <a className="nav-link disabled">Item #3</a>
+                                    <Link to={"/places"} className="nav-link">Places</Link>
                                 </li>
+                                
                             </ul>
                         </div>
                         
@@ -42,10 +47,9 @@ function Header() {
                             </a>
                             <ul className="dropdown-menu">
                                 <li><Link to={"/profile"} className="dropdown-item">Profile</Link></li>
-                                <li><a className="dropdown-item" href="#">Log out</a></li>
+                                <li><a onClick={handleLogout} className="dropdown-item" href="#">Log out</a></li>
                             </ul>
                         </div>
-
                     </div>
                 </nav>
             </header>
