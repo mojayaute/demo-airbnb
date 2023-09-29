@@ -110,17 +110,19 @@ exports.saveAddress = async function (req, res) {
 
 exports.getAllPlaces = async function (req, res) {
     try {
-        // Pagination options
-        const page = 1; // Page number
-        const perPage = 10; // Number of documents per page
-        
-        const skipDocuments = (page - 1) * perPage;
+
+        const page = parseInt(req.query.page) || 1; // Page number
+        const limit = parseInt(req.query.limit) || 10; // Number of documents per page
+
+        let totalItems = await Place.countDocuments();
+        const totalPages = Math.ceil(totalItems / limit);
+        const skip = (page - 1) * limit;
         
         let listings = await Place.find({})
-            .skip(skipDocuments)
-            .limit(perPage);
+            .skip(skip)
+            .limit(limit);
         console.log(listings);
-        res.json({ status: true, data: listings });
+        res.json({ status: true, data: {listings: listings, page: page, totalPages: totalPages} });
     } catch (error) {
         console.error("An error ocurred -> ", error);
         res.json({ status: false, data: error });

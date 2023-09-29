@@ -6,18 +6,34 @@ import React, { useState, useEffect } from "react";
 
 function Places() {
     const [places, setPlaces] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [totalRows, setTotalRows] = useState(0);
+    const [perPage, setPerPage] = useState(10);
 
     useEffect(() => {
-        getPlaces();
+        getPlaces(1);
     }, []);
 
-    const getPlaces = () => {
-        PlaceService.getAll().then(response => {
-            setPlaces(response.data.data);
+    const getPlaces = (page) => {
+        PlaceService.getAll(page).then(response => {
+            setPlaces(response.data.data.listings);
+            setTotalRows(response.data.data.totalPages);
+            setLoading(false);
         }).catch(e => {
             console.error(e);
         });
     }
+
+    const handlePerRowsChange = async (limit, page) => {
+        setLoading(true);
+        PlaceService.getAll(page).then(response => {
+            setPlaces(response.data.data.listings);
+            setPerPage(limit);
+            setLoading(false);
+        }).catch(e => {
+            console.error(e);
+        });
+    };
 
     const columns = [
         {
@@ -49,7 +65,7 @@ function Places() {
             name: 'Actions',
             cell: (row) => (
                 <div>
-                  <a href="#" className="btn btn-success">See details</a>
+                    <a href="#" className="btn btn-success">See details</a>
                 </div>
             ),
         },
@@ -63,7 +79,16 @@ function Places() {
                 <div className="row justify-content-center">
                     <div className="col-md-12">
                         <div className='card p-4'>
-                            <DataTable columns={columns} data={places} pagination />
+                            <DataTable
+                                columns={columns}
+                                data={places}
+                                progressPending={loading}
+                                pagination
+                                paginationServer
+                                paginationTotalRows={totalRows}
+                                onChangeRowsPerPage={handlePerRowsChange}
+                                onChangePage={getPlaces}
+                            />
                         </div>
                     </div>
                 </div>
