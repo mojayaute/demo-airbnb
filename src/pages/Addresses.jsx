@@ -56,8 +56,13 @@ function Address() {
 
     const handleFilter = event => {
         if (event.target.value) {
-            const filtered = addresses.filter( row => {
-                 return row.city.toLowerCase().includes(event.target.value.toLowerCase())
+            const filtered = addresses.filter(row => {
+                return row.country.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    row.state.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    row.city.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    row.street.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    row.zip.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    row.user.full_name.toLowerCase().includes(event.target.value.toLowerCase())
             })
             setAddresses(filtered)
         } else {

@@ -46,8 +46,12 @@ function Users() {
 
     const handleFilter = event => {
         if (event.target.value) {
-            const filtered = users.filter( row => {
-                return row.full_name.toLowerCase().includes(event.target.value.toLowerCase());
+            const filtered = users.filter(row => {
+                //let years = moment().diff(row.birthday, 'years');
+                return row.full_name.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    row.birthday.toLowerCase().includes(event.target.value.toLowerCase()) ||
+                    row.email.toLowerCase().includes(event.target.value.toLowerCase())
+                    //years === event.target.value.toLowerCase() ? row : null;
             })
             setUsers(filtered)
         } else {
